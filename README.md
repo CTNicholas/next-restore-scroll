@@ -75,7 +75,7 @@ restoreScrollPosition(router, ['#scrolling-wrapper', '.scrolling-element', '.scr
 ### Syntax
 
 ```js
-restoreScrollPosition(router, elementSelectors[, selectMultipleOfElement])
+restoreScrollPosition(router, elementSelectors[, selectMultipleOfElement[, restoreOnNew]])
 ```
 
 <dl>
@@ -85,5 +85,8 @@ restoreScrollPosition(router, elementSelectors[, selectMultipleOfElement])
   <dd>String or string array. The CSS selectors for the scrolling element(s).</dd>
   <dt>selectMultipleOfElement (optional)</dt>
   <dd>Boolean, default is false. If true, querySelectorAll will be used, instead of querySelector, and multiple elements selected by the same selector will have their position restored, instead of just the first.</dd>
+  <dt>restoreOnNew (optional)</dt>
+  <dd>Boolean, default is false. When revisiting a page with a scroll position, without navigating via the back/forward buttons, restore the scroll position from history.</dd>
+
 </dl>
 

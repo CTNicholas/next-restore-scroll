@@ -8,9 +8,10 @@ import Router from 'next/router'
  * have their scroll position restored.
  * @param router {object} - The router object passed from the main app.js component
  * @param elementSelectors {string|string[]} - A single element selector string, or an array of element selector strings
- * @param selectMultipleOfElement {boolean} - Select multiple elements from same selector? Default is false
+ * @param selectMultipleOfElement {boolean} - Default: false. Select multiple elements from same selector? Default is false
+ * @param restoreOnNew {boolean} - Default: true. When loading page with scroll position without using back/forward, reset position
  */
-export default function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false) {
+export default function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false, restoreOnNew = false) {
   let selectors
   selectors = Array.isArray(elementSelectors) ? elementSelectors : [elementSelectors]
 
@@ -57,7 +58,10 @@ export default function restoreScrollPosition (router, elementSelectors, selectM
     if ('scrollRestoration' in window.history) {
       let shouldRestoreScroll = false
       window.history.scrollRestoration = 'manual'
-      restoreScrollPos(router.asPath)
+
+      if (restoreOnNew) {
+        restoreScrollPos(router.asPath)
+      }
 
       const onBeforeUnload = event => {
         saveScrollPos(router.asPath)
