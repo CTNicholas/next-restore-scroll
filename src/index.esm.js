@@ -9,7 +9,7 @@ import Router from 'next/router'
  * @param router {object} - The router object passed from the main app.js component
  * @param elementSelectors {string|string[]} - A single element selector string, or an array of element selector strings
  * @param selectMultipleOfElement {boolean} - Default: false. Select multiple elements from same selector? Default is false
- * @param restoreOnNew {boolean} - Default: true. When loading page with scroll position without using back/forward, reset position
+ * @param restoreOnNew {boolean} - Default: false. When loading page without using back/forward, restore position
  */
 export default function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false, restoreOnNew = false) {
   let selectors

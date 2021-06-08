@@ -10,7 +10,7 @@ const Router = require('next/router')
  * @param router {object} - The router object passed from the main app.js component
  * @param elementSelectors {string|string[]} - A single element selector string, or an array of element selector strings
  * @param selectMultipleOfElement {boolean} - Select multiple elements from same selector? Default is false
- * @param restoreOnNew {boolean} - Default: true. When loading page with scroll position without using back/forward, reset position
+ * @param restoreOnNew {boolean} - Default: false. When loading page without using back/forward, restore position
  */
 module.exports = function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false, restoreOnNew = false) {
   let selectors
@@ -59,7 +59,7 @@ module.exports = function restoreScrollPosition (router, elementSelectors, selec
     if ('scrollRestoration' in window.history) {
       let shouldRestoreScroll = false
       window.history.scrollRestoration = 'manual'
-      
+
       if (restoreOnNew) {
         restoreScrollPos(router.asPath)
       }
