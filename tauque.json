@@ -1,0 +1,20 @@
+[
+  {
+    "name": "next-restore-scroll.esm",
+    "source": "src/index.js",
+    "type": "module",
+    "bundle": false,
+    "minify": false,
+    "sourceMap": true,
+    "useEnvVariables": true
+  },
+  {
+    "name": "next-restore-scroll.cjs",
+    "source": "src/index.js",
+    "type": "node",
+    "bundle": false,
+    "minify": false,
+    "sourceMap": true,
+    "useEnvVariables": true
+  }
+]

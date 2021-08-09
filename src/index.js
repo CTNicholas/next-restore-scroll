@@ -1,6 +1,5 @@
-const react = require('react')
-const { useEffect } = react
-const Router = require('next/router')
+import { useEffect } from 'react'
+import Router from 'next/router'
 
 /**
  * Restores the scroll position of every element selector passed as the second argument, in an array,
@@ -9,10 +8,11 @@ const Router = require('next/router')
  * have their scroll position restored.
  * @param router {object} - The router object passed from the main app.js component
  * @param elementSelectors {string|string[]} - A single element selector string, or an array of element selector strings
- * @param selectMultipleOfElement {boolean} - Select multiple elements from same selector? Default is false
- * @param restoreOnNew {boolean} - Default: false. When loading page without using back/forward, restore position
+ * @param selectMultipleOfElement {boolean} - Default: false. Select multiple elements from same selector? Default is false
+ * @param restoreOnNew {boolean} - Default: true. When loading page with scroll position without using back/forward, reset position
  */
-module.exports = function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false, restoreOnNew = false) {
+export default function restoreScrollPosition (router, elementSelectors, selectMultipleOfElement = false, restoreOnNew = false) {
+  const prefix = 'next-restore-scroll:'
   let selectors
   selectors = Array.isArray(elementSelectors) ? elementSelectors : [elementSelectors]
 
@@ -38,19 +38,42 @@ module.exports = function restoreScrollPosition (router, elementSelectors, selec
         y: element.scrollTop
       }
     })
-    sessionStorage.setItem(url, JSON.stringify(scrollPositions))
+    sessionStorage.setItem(prefix + url, JSON.stringify(scrollPositions))
   }
 
   // Restore each scroll position from sessionStorage
   function restoreScrollPos (url) {
-    const scrollPositions = JSON.parse(sessionStorage.getItem(url))
+    const scrollPositions = JSON.parse(sessionStorage.getItem(prefix + url))
     if (scrollPositions) {
       forEachElement((selector, element) => {
         const scrollPos = scrollPositions[selector]
         if (scrollPos) {
-          element.scrollTo(scrollPos.x, scrollPos.y)
+          disableSmoothScrollCallback(element, () => {
+            element.scrollTo(scrollPos.x, scrollPos.y)
+          })
         }
       })
+    }
+  }
+
+  // Scroll all elements to top
+  function scrollAllToTop () {
+    forEachElement((selector, element) => {
+      disableSmoothScrollCallback(element, () => {
+        element.scrollTo(0, 0)
+      })
+    })
+  }
+
+  // Disable smooth scroll (if enabled), run callback, re-enable (if previously enabled)
+  function disableSmoothScrollCallback (element, func) {
+    const smoothScroll = window.getComputedStyle(element).getPropertyValue('scroll-behavior')
+    if (smoothScroll !== 'auto') {
+      element.style.scrollBehavior = 'auto'
+      func()
+      element.style.scrollBehavior = smoothScroll
+    } else {
+      func()
     }
   }
 
@@ -77,6 +100,8 @@ module.exports = function restoreScrollPosition (router, elementSelectors, selec
         if (shouldRestoreScroll) {
           shouldRestoreScroll = false
           restoreScrollPos(url)
+        } else {
+          scrollAllToTop()
         }
       }
 
