@@ -1,6 +1,6 @@
 {
   "name": "next-restore-scroll",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A fix for restoring scroll position with Next Router when the body element is not used as the main scrolling element.",
   "homepage": "https://github.com/CTNicholas/next-restore-scroll#readme",
   "repository": "github:CTNicholas/next-restore-scroll",
@@ -19,7 +19,9 @@
   "dependencies": {
     "next": "^10.2.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
     "tauque": "^1.2.3"
   },
   "keywords": [
